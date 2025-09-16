@@ -51,16 +51,21 @@ Color et fill servent à derterminer la propriété en fonction des données soi
 Boxplot:
 
 ```{r plastic-waste-boxplot}
-# insert code here
+ggplot(data = plastic_waste, aes(x = continent,
+                                 plastic_waste_per_cap)) +
+  geom_boxplot()
 ```
 
 Violin plot:
 
 ```{r plastic-waste-violin}
-# insert code here
+ggplot(data = plastic_waste, aes(x = continent, y = plastic_waste_per_cap)) +
+  geom_violin()
 ```
 
-Réponse à la question...
+Response à la question...
+
+Les violins plots permettent de savoir la densitée de pays ayant un certain niveau de déchet.
 
 ### Exercise 4
 
