@@ -69,9 +69,13 @@ Les violins plots permettent de savoir la densitée de pays ayant un certain niv
 
 ### Exercise 4
 
-
+  
 ```{r plastic-waste-mismanaged}
-# insert code here
+ggplot(data= plastic_waste, aes( x =plastic_waste_per_cap, 
+                                 mismanaged_plastic_waste_per_cap,
+                                 colour = continent )) +
+geom_point() + 
+   facet_wrap( ~continent , ncol = 3)
 ```
 
 Réponse à la question...
