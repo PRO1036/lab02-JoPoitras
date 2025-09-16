@@ -37,11 +37,14 @@ ggplot(data = plastic_waste, aes(x = plastic_waste_per_cap)) +
 ### Exercise 2
 
 ```{r plastic-waste-density}
-ggplot(data = plastic_waste, aes(x = plastic_waste_per_cap)) +
-  geom_density()
+ggplot(data = plastic_waste, aes(x = plastic_waste_per_cap,
+                                 fill = continent)) +
+  geom_density(alpha = 0.5) 
 ```
 
 Réponse à la question...
+
+Color et fill servent à derterminer la propriété en fonction des données soit ici les continents et le plastic_waster_per_cap tandis que alpha lui sert fixer la transparence peu importe la variable dans les données.
 
 ### Exercise 3
 
