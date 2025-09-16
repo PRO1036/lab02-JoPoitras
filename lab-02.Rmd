@@ -84,11 +84,19 @@ Réponse à la question...
 
 
 ```{r plastic-waste-population-total}
-# insert code here
+ggplot(data= plastic_waste, aes( x =plastic_waste_per_cap, 
+                                 total_pop,
+                                 colour = continent )) +
+geom_point() + 
+   facet_wrap( ~continent , ncol = 3)
 ```
 
 ```{r plastic-waste-population-coastal}
-# insert code here
+ggplot(data= plastic_waste, aes( x =plastic_waste_per_cap, 
+                                 coastal_pop,
+                                 colour = continent )) +
+geom_point() + 
+   facet_wrap( ~continent , ncol = 3)
 ```
 
 Réponse à la question...
