@@ -28,7 +28,8 @@ plastic_waste <- plastic_waste %>%
 ``` r
 ggplot(data = plastic_waste, aes(x = plastic_waste_per_cap)) +
   geom_histogram(binwidth = 0.2) +
-  facet_wrap( ~continent , ncol = 3)
+  facet_wrap( ~continent , ncol = 3) + 
+  labs(title = "Distribution des quantité de déchets par habitant", subtitle = "Selon le continent", x = "Quantité de déchets plastiques par habitant en kg/jour ", y ="Compte" ) 
 ```
 
 ![](lab-02_files/figure-gfm/plastic-waste-continent-1.png)<!-- -->
@@ -38,58 +39,152 @@ ggplot(data = plastic_waste, aes(x = plastic_waste_per_cap)) +
 ``` r
 ggplot(data = plastic_waste, aes(x = plastic_waste_per_cap,
                                  fill = continent)) +
-  geom_density(alpha = 0.5) 
+  geom_density(alpha = 0.5) + 
+   labs(title = "Distribution des quantité de déchets par habitant", subtitle = "Selon le continent", x = "Quantité de déchets plastiques par habitant en kg/jour ", y = "Densité") 
 ```
 
 ![](lab-02_files/figure-gfm/plastic-waste-density-1.png)<!-- -->
 
 Réponse à la question…
 
-Car color et fill servent à derterminer la propriété en fonction des
-données soit ici les continents et le plastic_waster_per_cap tandis que
-alpha lui sert fixer la transparence peu importe la variable dans les
-données.
+Color et fill servent à derterminer la propriété en fonction des données
+soit ici les continents et le plastic_waster_per_cap tandis que alpha
+lui sert fixer la transparence peu importe la variable dans les données.
 
 ### Exercise 3
 
 Boxplot:
 
 ``` r
-# insert code here
+ggplot(data = plastic_waste, aes(x = continent,
+                                 plastic_waste_per_cap)) +
+  geom_boxplot() + 
+  labs(title = "Distribution des quantité de déchets par habitant", subtitle = "Selon le continent", y = "Quantité de déchets plastiques par habitant en kg/jour ", x = "Continents") 
 ```
+
+![](lab-02_files/figure-gfm/plastic-waste-boxplot-1.png)<!-- -->
 
 Violin plot:
 
 ``` r
-# insert code here
+ggplot(data = plastic_waste, aes(x = continent, y = plastic_waste_per_cap)) +
+  geom_violin() + 
+  labs(title = "Distribution des quantité de déchets par habitant", subtitle = "Selon le continent", y = "Quantité de déchets plastiques par habitant en kg/jour ", x = "Continents") 
 ```
 
-Réponse à la question…
+![](lab-02_files/figure-gfm/plastic-waste-violin-1.png)<!-- -->
+
+Response à la question…
+
+Les violins plots permettent de savoir la densitée de pays ayant un
+certain niveau de déchet.
 
 ### Exercise 4
 
 ``` r
-# insert code here
+ggplot(data= plastic_waste, aes( x =plastic_waste_per_cap, 
+                                y = mismanaged_plastic_waste_per_cap,
+                                 colour = continent )) +
+geom_point() + 
+   facet_wrap( ~continent , ncol = 3) + 
+   labs(title = "Relation entre la quantité de déchet et la quantité de déchets non gérés", subtitle = "Selon le continent", y = "Quantité de déchets plastiques non gérés par habitant en kg/jour ", x = "Quantité de déchets plastiques par habitant en kg/jour") 
 ```
 
+![](lab-02_files/figure-gfm/plastic-waste-mismanaged-1.png)<!-- -->
+
 Réponse à la question…
+
+Plus le nombre d’habitants augmente, plus la quantité de déchets mal
+gérés augmente. De plus, il est possible de voir une meilleure gestion
+des déchets en Europe, ainsi qu’en Amérique du Nord. Principalement en
+Asie et en Afrique, la quantité de pays ayant une haute quantité de
+déchets mal gérés est plus élevée, cependant en Océanie et en Amérique
+du Sud, certain pays ont eux aussi une forte quantité de déchets mal
+gérés. Les continents les plus développés ont donc plus de déchets
+générés, mais ont une meilleure gestion de ces derniers.
 
 ### Exercise 5
 
 ``` r
-# insert code here
+ggplot(data= plastic_waste, aes( x =plastic_waste_per_cap, 
+                                 y = total_pop,
+                                 colour = continent )) +
+geom_point() + 
+   facet_wrap( ~continent , ncol = 3) + 
+   labs(title = "Relation entre la quantité de déchets plastiques par habitant et 
+        le nombre total d’habitants vivant près d’une côte", subtitle = "Selon le continent", y = "Population totale selon Gapminder ", x = "Quantité de déchets plastiques par habitant en kg/jour")
 ```
+
+    ## Warning: Removed 10 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](lab-02_files/figure-gfm/plastic-waste-population-total-1.png)<!-- -->
 
 ``` r
-# insert code here
+ggplot(data= plastic_waste, aes( y =, coastal_pop,
+                                 x = plastic_waste_per_cap,
+                                 colour = continent )) +
+geom_point() +
+   facet_wrap( ~continent , ncol = 3) +  
+   labs(title = "Relation entre la quantité de déchets plastiques par habitant et 
+        le nombre total d’habitants vivant près d’une côte", subtitle = "Selon le continent", y = "Nombres de personnes vivant sur des côtes  ", x = "Quantité de déchets plastiques par habitant en kg/jour")
 ```
 
+![](lab-02_files/figure-gfm/plastic-waste-population-coastal-1.png)<!-- -->
+
 Réponse à la question…
+
+Les deux relations semblent simmilaires, cependant, pour la population
+côtières, elle est légèrement plus forte que pour la polulation totale.
+En effet, les déchets plastiques impactent directement les villes
+côtières.
 
 ## Conclusion
 
 Recréez la visualisation:
 
 ``` r
-# insert code here
+plastic_waste_coastal <- plastic_waste %>% 
+  mutate(coastal_pop_prop = coastal_pop /total_pop) %>%
+  filter(plastic_waste_per_cap < 3) 
+ggplot(plastic_waste_coastal, aes( x = coastal_pop_prop,
+                                 y = plastic_waste_per_cap,
+                                 colour = continent )) +
+  geom_point() +
+  geom_smooth(method = loess,
+              colour =  "black",
+               se = TRUE) +
+   scale_color_manual(values = c("Africa" = "#79c8af",    # Bleu clair
+                               "Asia" = "#fd895c",      # Jaune
+                               "Europe" = "#879bc9",    # Vert
+                               "North America" = "#e788c3", # Jaune pâle
+                               "Oceania" = "#a1d64a",   # Orange
+                               "South America" = "#ffd82a")) + # Rose
+  labs(title = "Quantité de déchets plastiques vs Proportion de la population côtière", subtitle = "Selon le continent", x = "Proportion de la population côtière (Coastal / total population) ", y =  "Nombre de déchets plastiques par habitant") 
 ```
+
+    ## `geom_smooth()` using formula = 'y ~ x'
+
+    ## Warning: Removed 10 rows containing non-finite outside the scale range
+    ## (`stat_smooth()`).
+
+    ## Warning: Removed 10 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](lab-02_files/figure-gfm/recreate-viz-1.png)<!-- -->
+
+## Interprétation
+
+Il est possible de remarquer que lorsque la proportion de la population
+côtière est plus faible (entre 0,0 et 0,5), le nombre de déchets
+plastiques par habitant est plus faible. Lorsqu’on dépasse 0.5 et se
+rapproche de 1,25, il est possible de voir une stabilisation de la
+courbe de tendance, cependant il est possible de voir que certain pays
+notaments plusieurs en Amérique de Nord ont un haut niveau de nombre de
+déchets plastiques par habitant. Cette hausse de la courbe de tendance
+peut être expliquer par le tourisme ou l’urbanisation des pays situés
+dans ces continents. En effets, entre 0,0 et 0,5, il y une forte
+quantité de pays provenant d’afrique ou d’asie, zones où certains pays
+sont plus pauvre. Après 1,25, la courbe est stable avec une lègere pente
+déscendante, mais passer se seuil le nombre de pays est très faible et
+sort de la moyenne.
