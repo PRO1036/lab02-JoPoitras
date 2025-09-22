@@ -92,10 +92,10 @@ geom_point() +
 ```
 
 ```{r plastic-waste-population-coastal}
-ggplot(data= plastic_waste, aes( x =plastic_waste_per_cap, 
-                                 coastal_pop,
+ggplot(data= plastic_waste, aes( x =, coastal_pop,
+                                 plastic_waste_per_cap,
                                  colour = continent )) +
-geom_point() + 
+geom_point() +
    facet_wrap( ~continent , ncol = 3)
 ```
 
@@ -104,7 +104,19 @@ Réponse à la question...
 ## Conclusion
 
 Recréez la visualisation:
+```{r filter-data, message=FALSE}
+plastic_waste_coastal <- plastic_waste %>% 
+  mutate(coastal_pop_prop = coastal_pop /total_pop) %>%
+  filter(plastic_waste_per_cap < 3)
+```
+
+  
 
 ```{r recreate-viz}
-# insert code here
+ggplot(data= plastic_waste, aes( x =, coastal_pop /total_pop,
+                                 y = plastic_waste_per_cap,
+                                 colour = continent )) +
+geom_point() +
+  labs(title = "Quantité de déchets plastiques vs Proportion de la population côtière", subtitle = "Selon le continent") +
+ geom_smooth(method = lm) + geom_smooth(method = "loess")
 ```
